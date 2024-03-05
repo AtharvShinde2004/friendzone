@@ -2,7 +2,7 @@
 
 ## Overview
 
-FriendZone is a social media application that allows users to connect, share posts, and engage with each other. This README provides an overview of the key files and features in the application.
+FriendZone is a social media application that allows users to connect, share posts, and engage with each other. This README provides an overview of the key files, features, and information about contributing to the application.
 
 ## Files and Directory Structure
 
@@ -42,10 +42,6 @@ FriendZone is a social media application that allows users to connect, share pos
    - Manages the database connection.
    - Contains configurations for connecting to the MySQL database.
 
-### 10. **styles.css**
-   - CSS file for styling the HTML pages.
-   - Defines the layout and appearance of the application.
-
 ## Security Measures
 
 1. **User Authentication:**
@@ -82,8 +78,19 @@ FriendZone is a social media application that allows users to connect, share pos
     - Implementation of monitoring tools for detecting unusual activities.
     - Detailed logging for auditing and analysis.
 
-## Usage
+## Contribution Guidelines
 
-1. Clone the repository.
-2. Set up a MySQL database and update `db.php` with the appropriate credentials.
-3. Run the application on a PHP-supported server.
+Thank you for considering contributing to FriendZone! To contribute, follow these steps:
+
+1. Fork the repository on GitHub.
+2. Clone the forked repository to your local machine.
+3. Create a new branch for your contribution: `git checkout -b feature/new-feature`.
+4. Make your changes and commit them with descriptive commit messages.
+5. Push your changes to your forked repository: `git push origin feature/new-feature`.
+6. Create a pull request on the original repository.
+
+Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) and follow the [Contribution Guidelines](CONTRIBUTING.md).
+
+## License
+
+FriendZone is licensed under the [MIT License](LICENSE).
