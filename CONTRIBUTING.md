@@ -9,5 +9,3 @@ We appreciate your interest in contributing to FriendZone! Follow these guidelin
 5. Push your branch to your forked repository
 6. Open a pull request to the main repository
 
-Please read our full [Contribution Guidelines](CONTRIBUTING.md) for detailed instructions.
-
