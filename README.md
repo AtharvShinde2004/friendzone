@@ -1,4 +1,4 @@
-**README.md - Friendzone Social Media Application**
+# Friendzone Social Media Application
 
 ### Introduction
 
