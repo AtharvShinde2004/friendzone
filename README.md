@@ -1,96 +1,93 @@
-# FriendZone Social Media Application
+**README.md - Friendzone Social Media Application**
 
-## Overview
+### Introduction
 
-FriendZone is a social media application that allows users to connect, share posts, and engage with each other. This README provides an overview of the key files, features, and information about contributing to the application.
+Welcome to the "Friendzone" Social Media Application repository. This application is a PHP-based social media platform that allows users to create posts, make comments, and connect with others. This README file provides an overview of the PHP files in the project and their functionalities.
 
-## Files and Directory Structure
+### File Structure
 
-### 1. **index.php**
-   - Landing page and entry point to the application.
-   - Includes options for user registration and login.
+The repository includes the following PHP files:
 
-### 2. **register.php**
-   - Handles user registration.
-   - Collects user details, validates inputs, and creates a new user account.
+1. **index.php**
 
-### 3. **login.php**
-   - Manages user authentication.
-   - Validates user credentials and starts a session on successful login.
+   - **Description:** The main landing page of the application, displaying posts, search functionality, and user login/register options.
+   - **Dependencies:** Requires `db.php`, `add-comment.php`, `create-post.php`, `dashboard.php`, `login.php`, `register.php`, `update-profile.php`, `view-profile.php`, and Bootstrap library.
 
-### 4. **dashboard.php**
-   - User's home page after login.
-   - Displays user-specific content, such as posts and profile information.
+2. **login.php**
 
-### 5. **create-post.php**
-   - Allows users to create new posts.
-   - Captures post content and associates it with the user.
+   - **Description:** Handles user login functionality.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Implements password hashing using `password_verify()` to secure user passwords.
+     - Utilizes session management to ensure secure user sessions.
 
-### 6. **view-post.php**
-   - Displays a single post along with comments.
-   - Allows users to comment on the post.
+3. **register.php**
 
-### 7. **update-profile.php**
-   - Enables users to update their profile information.
-   - Handles changes to biography and contact details.
+   - **Description:** Manages user registration and account creation.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Implements password hashing using `password_hash()` to secure user passwords.
+     - Validates and sanitizes user inputs to prevent SQL injection.
 
-### 8. **view-profile.php**
-   - Shows user profile information.
-   - Displays user details, bio, and contact information.
+4. **update-profile.php**
 
-### 9. **db.php**
-   - Manages the database connection.
-   - Contains configurations for connecting to the MySQL database.
+   - **Description:** Allows users to update their profile information.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Validates and sanitizes user inputs to prevent potential security vulnerabilities.
 
-## Security Measures
+5. **view-profile.php**
 
-1. **User Authentication:**
-   - Secure password hashing using PHP's `password_hash()` function.
-   - Verification of password using `password_verify()`.
+   - **Description:** Displays user profiles and their information.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Ensures proper authorization to view user profiles.
+     - Validates and sanitizes user inputs.
 
-2. **Data Validation:**
-   - Validation of user inputs to prevent SQL injection and other attacks.
+6. **add-comment.php**
 
-3. **Session Management:**
-   - Secure session handling to prevent unauthorized access.
-   - Implementation of session timeouts.
+   - **Description:** Manages the addition of comments to posts.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Validates and sanitizes user inputs to prevent potential security vulnerabilities.
 
-4. **Secure Communication:**
-   - Usage of HTTPS to encrypt data transmitted between the user's browser and the server.
+7. **create-post.php**
 
-5. **Data Privacy:**
-   - Implementation of privacy settings to control post visibility.
-   - Compliance with data protection regulations.
+   - **Description:** Handles the creation of new posts.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Validates and sanitizes user inputs.
+     - Ensures proper authorization to create posts.
 
-6. **Prevent Cross-Site Scripting (XSS):**
-   - Sanitization of user inputs and proper output encoding.
+8. **dashboard.php**
 
-7. **Rate Limiting:**
-   - Basic rate limiting mechanism to prevent brute force attacks on login attempts.
+   - **Description:** User dashboard displaying user-specific information and options.
+   - **Dependencies:** Requires `db.php`.
+   - **Security Measures:**
+     - Ensures proper authorization for dashboard access.
+     - Validates and sanitizes user inputs.
 
-8. **User Authorization:**
-   - Enforcement of proper user authorization to access and modify user-specific data.
+9. **db.php**
+   - **Description:** Contains database connection details. Used by various PHP files.
+   - **Security Measures:**
+     - Encourages the use of parameterized queries to prevent SQL injection.
 
-9. **Backup and Recovery:**
-   - Regular data backups and a disaster recovery plan in case of data loss.
+### Setup and Configuration
 
-10. **Monitoring and Logging:**
-    - Implementation of monitoring tools for detecting unusual activities.
-    - Detailed logging for auditing and analysis.
+1. Ensure you have a PHP environment set up.
+2. Import the database schema using the provided SQL script (`friendzone_db.sql`).
+3. Update the database connection details in `db.php` with your database credentials.
 
-## Contribution Guidelines
+### Marker Login Details
 
-Thank you for considering contributing to FriendZone! To contribute, follow these steps:
+1. Username: Atharv
+2. Email: shindeatharv576@gmail.com
+3. Password: Atharv
 
-1. Fork the repository on GitHub.
-2. Clone the forked repository to your local machine.
-3. Create a new branch for your contribution: `git checkout -b feature/new-feature`.
-4. Make your changes and commit them with descriptive commit messages.
-5. Push your changes to your forked repository: `git push origin feature/new-feature`.
-6. Create a pull request on the original repository.
+### Security Considerations
 
-Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) and follow the [Contribution Guidelines](CONTRIBUTING.md).
-
-## License
-
-FriendZone is licensed under the [MIT License](LICENSE).
+- Implement secure password hashing for user authentication.
+- Validate user inputs to prevent SQL injection and other forms of attacks.
+- Ensure proper session management to prevent unauthorized access.
+- Use HTTPS to encrypt data transmitted between the user's browser and the server.
+- Regularly update server software, frameworks, and libraries to address security vulnerabilities.
