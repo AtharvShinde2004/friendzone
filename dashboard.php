@@ -93,9 +93,13 @@ $resultUserPosts = $conn->query($sqlUserPosts);
         .user-posts {
             background-color: #fff;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
+            border-radius: 10px;
+            /* Updated radius */
+            padding: 20px;
+            /* Updated padding */
             margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Drop shadow */
         }
 
         .post {
@@ -104,20 +108,23 @@ $resultUserPosts = $conn->query($sqlUserPosts);
             border: 1px solid #ddd;
             padding: 15px;
             margin-bottom: 15px;
-            border-radius: 5px;
+            border-radius: 10px;
+            /* Updated radius */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Drop shadow */
         }
 
         .delete-post {
             position: absolute;
-            top: 25px;
-            right: 5px;
+            top: 15px;
+            /* Updated top position */
+            right: 15px;
+            /* Updated right position */
             color: #f00;
-            /* Red color for the delete button */
             cursor: pointer;
             border: none;
             border-radius: 5px;
             padding: 10px;
-            margin-right: 10px;
             background-color: #ddd;
         }
 
@@ -138,7 +145,7 @@ $resultUserPosts = $conn->query($sqlUserPosts);
 
             .delete-post {
                 top: 10px;
-                right: 5px;
+                right: 10px;
                 padding: 5px;
             }
         }
