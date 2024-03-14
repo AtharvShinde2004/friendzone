@@ -116,3 +116,4 @@ if (isset($_SESSION['user_id'])) {
 </body>
 
 </html>
+<?php require('footer.php'); ?>

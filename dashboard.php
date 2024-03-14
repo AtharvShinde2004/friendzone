@@ -199,3 +199,4 @@ $resultUserPosts = $conn->query($sqlUserPosts);
 </body>
 
 </html>
+<?php require('footer.php'); ?>

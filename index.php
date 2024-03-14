@@ -527,3 +527,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_comment']) && !
 </body>
 
 </html>
+<?php require('footer.php'); ?>
