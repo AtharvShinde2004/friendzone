@@ -30,6 +30,53 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
     $searchQuery = "SELECT * FROM users WHERE Name LIKE '%$searchTerm%'";
     $searchResult = $conn->query($searchQuery);
 }
+
+// Comment submission logic
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['comment_content']) && !empty($_POST['comment_content'])) {
+    $postId = $_POST['PostID'];
+    $userId = $_SESSION['user_id'];
+    $commentContent = $_POST['comment_content'];
+
+    // Insert the comment into the database
+    $insertCommentQuery = "INSERT INTO comments (PostID, UserID, content) VALUES ('$postId', '$userId', '$commentContent')";
+    if ($conn->query($insertCommentQuery) === TRUE) {
+        // Redirect to the same page after successful comment submission
+        header("Location: index.php");
+        exit();
+    } else {
+        // Handle error if comment submission fails
+        echo "Error: " . $insertCommentQuery . "<br>" . $conn->error;
+    }
+}
+
+// Delete comment logic
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_comment']) && !empty($_POST['delete_comment'])) {
+    $commentId = $_POST['comment_id'];
+
+    // Check if the comment belongs to the current user
+    $userId = $_SESSION['user_id'];
+    $checkCommentOwnershipQuery = "SELECT * FROM comments WHERE CommentID = '$commentId' AND UserID = '$userId'";
+    $result = $conn->query($checkCommentOwnershipQuery);
+
+    if ($result->num_rows > 0) {
+        // Comment belongs to the current user, proceed with deletion
+        $deleteCommentQuery = "DELETE FROM comments WHERE CommentID = '$commentId'";
+        if ($conn->query($deleteCommentQuery) === TRUE) {
+            // Return a success response
+            echo "Comment deleted successfully";
+            exit();
+        } else {
+            // Handle error if deletion fails
+            echo "Error: " . $deleteCommentQuery . "<br>" . $conn->error;
+            exit();
+        }
+    } else {
+        // Return an error response if the comment does not belong to the current user
+        echo "You do not have permission to delete this comment.";
+        exit();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -195,7 +242,9 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
         }
 
         .like-btn,
-        .share-btn {
+        .share-btn,
+        .edit-btn,
+        .delete-btn {
             padding: 8px;
             margin-right: 10px;
             cursor: pointer;
@@ -219,6 +268,24 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
             /* Rounded corners */
         }
 
+        .edit-btn {
+            background-color: #5cb85c;
+            /* Green */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            /* Rounded corners */
+        }
+
+        .delete-btn {
+            background-color: #d9534f;
+            /* Red */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            /* Rounded corners */
+        }
+
         .like-count {
             color: #606770;
             /* Facebook text color */
@@ -226,7 +293,9 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
         }
 
         .like-btn:hover,
-        .share-btn:hover {
+        .share-btn:hover,
+        .edit-btn:hover,
+        .delete-btn:hover {
             filter: brightness(90%);
         }
     </style>
@@ -293,7 +362,7 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
         // Comment Section
         if ($loggedIn) {
             echo "<div class='comment-container'>";
-            echo "<form action='add-comment.php' method='post'>";
+            echo "<form action='index.php' method='post'>";
             echo "<input type='hidden' name='PostID' value='{$rowPost['PostID']}'>";
             echo "<textarea name='comment_content' placeholder='Write a comment'></textarea>";
             echo "<button type='submit'>Comment</button>";
@@ -322,6 +391,13 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
             echo "<div class='comment'>";
             echo "<p>{$rowComment['content']}</p>";
             echo "<p><small>Commented by: {$rowComment['UserName']} | {$rowComment['timestamp']}</small></p>";
+
+            // Edit and Delete buttons (only for the comment owner)
+            if ($loggedIn && $rowComment['UserID'] == $_SESSION['user_id']) {
+                echo "<button class='btn btn-success edit-btn' data-commentid='{$rowComment['CommentID']}'>Edit</button>";
+                echo "<button class='btn btn-danger delete-btn' data-commentid='{$rowComment['CommentID']}'>Delete</button>";
+            }
+
             echo "</div>";
         }
 
@@ -336,6 +412,7 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
         function goBack() {
             window.history.back();
         }
+
         // Script for Likes
         $(document).ready(function() {
             $('.like-btn').click(function() {
@@ -381,6 +458,68 @@ if (isset($_SESSION['user_id']) && $_SERVER["REQUEST_METHOD"] == "GET" && isset(
 
                     // Inform the user that the link has been copied
                     alert(`Share link copied to clipboard: ${shareLink}`);
+                });
+            });
+        });
+
+        // Script for Edit Button
+        document.addEventListener('DOMContentLoaded', function() {
+            const editButtons = document.querySelectorAll('.edit-btn');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const commentId = this.dataset.commentid;
+                    const newComment = prompt("Enter your edited comment:");
+
+                    if (newComment !== null && newComment !== '') {
+                        // Make an AJAX request to update the comment
+                        $.ajax({
+                            type: 'POST',
+                            url: 'edit-comment.php',
+                            data: {
+                                comment_id: commentId,
+                                new_comment: newComment
+                            },
+                            success: function(response) {
+                                // Reload the page after successful edit
+                                location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error updating comment:', error);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Script for Delete Button
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const commentId = this.dataset.commentid;
+                    const confirmation = confirm("Are you sure you want to delete this comment?");
+
+                    if (confirmation) {
+                        // Make an AJAX request to delete the comment
+                        $.ajax({
+                            type: 'POST',
+                            url: 'index.php',
+                            data: {
+                                delete_comment: 'true',
+                                comment_id: commentId
+                            },
+                            success: function(response) {
+                                // Reload the page after successful deletion
+                                location.reload();
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error deleting comment:', error);
+                            }
+                        });
+                    }
                 });
             });
         });
